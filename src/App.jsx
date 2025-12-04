@@ -153,10 +153,10 @@ function App() {
               <SkillCard
                   title="Competitive Programming"
                   skills={[
-                    "LeetCode: 300+ Problems Solved",
-                    "LeetCode Rating: 1450+",
-                    "HackerRank: 5★ Problem Solving",
-                    "HackerRank: 5★ Java",
+                    "LeetCode: ",
+                    "LeetCode Rating: ",
+                    "HackerRank: ",
+                    "HackerRank: ",
                   ]}
                 />
 
