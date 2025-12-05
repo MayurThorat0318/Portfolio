@@ -114,9 +114,7 @@ function App() {
               <p>
               I am a motivated Frontend / MERN Stack Developer with strong fundamentals in React, JavaScript, Node.js, Express, and modern web development. I enjoy building clean, responsive, and user-friendly interfaces, and I continuously sharpen my skills through practical projects such as an Airbnb MERN clone, RTO chatbot, and productivity applications.
               </p>
-              <p>
-              I am a motivated Frontend / MERN Stack Developer with strong fundamentals in React, JavaScript, Node.js, Express, and modern web development. I enjoy building clean, responsive, and user-friendly interfaces, and I continuously sharpen my skills through practical projects such as an Airbnb MERN clone, RTO chatbot, and productivity applications.
-              </p>
+             
               <p>
               I am currently seeking a fresher software developer role where I can contribute to meaningful projects, collaborate with experienced developers, and grow as a professional in the tech industry.
               </p>
