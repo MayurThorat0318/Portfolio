@@ -12,7 +12,7 @@ const RESUME_FILENAME = "Mayuresh_Thorat_Resume.pdf";
 /* ============================================================
    DATA
    ============================================================ */
-const NAV_ITEMS = ["home", "about", "skills", "projects", "resume", "contact"];
+const NAV_ITEMS = ["home", "about", "skills", "projects", "achievements", "resume", "contact"];
 
 const PROJECTS = [
   {
@@ -337,8 +337,6 @@ export default function App() {
                 <div className="about-paras">
                   <p className="about-para">I&apos;m a Computer Science student pursuing my <strong>M.Sc. at Fergusson College, Pune</strong>, with a strong B.Sc. foundation (CGPA 8.98) from Sangamner College. My work spans two equally strong tracks — <strong>full-stack development</strong> and <strong>AI / Machine Learning</strong> — and I enjoy working across both depending on what the problem needs.</p>
                   <p className="about-para">On the ML side, my NIQ project achieved <strong>99.8% Random Forest accuracy</strong> on 50,000 real streaming sessions, projected to unlock +119K ad impressions. On the development side, UPHI is a production healthcare platform with <strong>20+ Spring Boot APIs</strong>, three interfaces, JWT auth, Docker deployment, and Gemini AI integration — built and shipped end-to-end.</p>
-                  <p className="about-para">Beyond code, I&apos;m a natural organiser and leader — I&apos;ve managed college trips to Konkan, co-organised TechnoFest (the annual Science Department festival), and coordinated freshers&apos; and farewell events end-to-end.</p>
-                  <p className="about-para"><strong>Interests:</strong> Solving complex problems · Event management &amp; leadership · Talking with new people · Playing cricket · Listening to music</p>
                 </div>
                 <div>
                   <div className="edu-stack">
@@ -356,26 +354,7 @@ export default function App() {
                     </div>
 
                   </div>
-                  <div className="achievement-card">
-                    <div className="achievement-icon">🏆</div>
-                    <div>
-                      <div className="achievement-title">NIQ Media Analytics Challenge 2025</div>
-                      <div className="achievement-desc">Team DataGrinders shortlisted for the Final Round, Fergusson College M.Sc. CS. Achieved 99.8% Random Forest model accuracy on 50,000 real streaming sessions.</div>
-                    </div>
-                  </div>
 
-                  <div className="extracurricular-block">
-                    <div className="extra-heading">
-                      <span className="extra-icon">⭐</span>
-                      <span>Leadership &amp; Event Management</span>
-                    </div>
-                    <ul className="extra-list">
-                      <li>Independently planned and managed the B.Sc. Second Year class trip to Konkan — coordinated transport, accommodation, itinerary, and budget for the full batch.</li>
-                      <li>Co-organised and managed <strong>TechnoFest</strong>, the annual Science Department festival — handled event scheduling, stall coordination, team management, and smooth execution of technical and cultural activities.</li>
-                      <li>Organised the <strong>Farewell ceremony</strong> for B.Sc. Third Year students — end-to-end coordination including venue, programme flow, décor, and student participation.</li>
-                      <li>Managed the <strong>Freshers&apos; Party</strong> for incoming B.Sc. First Year students — designed the event schedule, coordinated volunteers, and created a welcoming experience for new students.</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>
@@ -422,7 +401,7 @@ export default function App() {
                         <p className="proj-desc">{p.desc}</p>
                         <div className="proj-tech">{p.tech.map((t) => <span className="proj-tech-tag" key={t}>{t}</span>)}</div>
                         <div className="proj-links">
-                          <a href={p.github} target="_blank" rel="noreferrer" className="proj-link"><IconGithub /> View on GitHub</a>
+                          <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link-github"><IconGithub /> View on GitHub</a>
                           {p.demo && <a href={p.demo} target="_blank" rel="noreferrer" className="proj-link accent"><IconExternal /> Live Demo</a>}
                         </div>
                       </div>
@@ -445,12 +424,69 @@ export default function App() {
                       <p className="proj-desc">{p.desc}</p>
                       <div className="proj-tech">{p.tech.map((t) => <span className="proj-tech-tag" key={t}>{t}</span>)}</div>
                       <div className="proj-links" style={{ marginTop: "auto", paddingTop: "0.5rem" }}>
-                        <a href={p.github} target="_blank" rel="noreferrer" className="proj-link"><IconGithub /> GitHub</a>
+                        <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link-github"><IconGithub /> GitHub</a>
                         {p.demo && <a href={p.demo} target="_blank" rel="noreferrer" className="proj-link accent"><IconExternal /> Live Demo</a>}
                       </div>
                     </article>
                   )
                 )}
+              </div>
+            </div>
+          </section>
+
+          {/* ── ACHIEVEMENTS & EXTRACURRICULARS ── */}
+          <section id="achievements" className="section achievements-section">
+            <div className="container">
+              <div className="sec-eyebrow">Beyond Code</div>
+              <h2 className="sec-heading">Achievements &amp; Extracurriculars</h2>
+              <p className="sec-sub">Recognition, leadership, and real-world impact outside the classroom.</p>
+
+              <div className="achievements-grid">
+                {/* Achievement */}
+                <div className="ach-card ach-card-highlight">
+                  <div className="ach-card-top">
+                    <span className="ach-icon">🏆</span>
+                    <span className="ach-badge">Achievement</span>
+                  </div>
+                  <h3 className="ach-title">NIQ Media Analytics Challenge 2025</h3>
+                  <p className="ach-desc">Team DataGrinders shortlisted for the Final Round, Fergusson College M.Sc. CS. Achieved 99.8% Random Forest model accuracy on 50,000 real streaming sessions — projected to unlock +119K additional ad impressions for NIQ.</p>
+                  <div className="ach-tags">
+                    <span className="ach-tag">99.8% Accuracy</span>
+                    <span className="ach-tag">Final Round</span>
+                    <span className="ach-tag">Team DataGrinders</span>
+                  </div>
+                </div>
+
+                {/* Extracurriculars */}
+                <div className="ach-card">
+                  <div className="ach-card-top">
+                    <span className="ach-icon">⭐</span>
+                    <span className="ach-badge">Leadership</span>
+                  </div>
+                  <h3 className="ach-title">Event Management &amp; Leadership</h3>
+                  <ul className="ach-list">
+                    <li>Independently planned and managed the B.Sc. Second Year class trip to Konkan — coordinated transport, accommodation, itinerary, and budget for the full batch.</li>
+                    <li>Co-organised and managed <strong>TechnoFest</strong>, the annual Science Department festival — event scheduling, stall coordination, team management, and execution of technical and cultural activities.</li>
+                    <li>Organised the <strong>Farewell ceremony</strong> for B.Sc. Third Year students — end-to-end coordination including venue, programme flow, décor, and student participation.</li>
+                    <li>Managed the <strong>Freshers&apos; Party</strong> for incoming B.Sc. First Year students — event schedule, volunteers coordination, and welcoming experience for new students.</li>
+                  </ul>
+                </div>
+
+                {/* Interests */}
+                <div className="ach-card ach-card-interests">
+                  <div className="ach-card-top">
+                    <span className="ach-icon">✨</span>
+                    <span className="ach-badge">Interests</span>
+                  </div>
+                  <h3 className="ach-title">What I Enjoy</h3>
+                  <div className="interests-grid">
+                    <div className="interest-item"><span>🧩</span> Solving complex problems</div>
+                    <div className="interest-item"><span>🎙</span> Event management &amp; leadership</div>
+                    <div className="interest-item"><span>🤝</span> Talking with new people</div>
+                    <div className="interest-item"><span>🏏</span> Playing cricket</div>
+                    <div className="interest-item"><span>🎵</span> Listening to music</div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
