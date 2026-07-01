@@ -540,7 +540,7 @@ export default function App() {
               <h2 className="sec-heading">Who I Am</h2>
               <div className="about-grid">
                 <div className="about-paras">
-                  <p className="about-para">I&apos;m a Computer Science student pursuing my <strong>M.Sc. at Fergusson College, Pune</strong>, with a strong B.Sc. foundation (CGPA 8.98) from Sangamner College. My work spans two equally strong tracks — <strong>full-stack development</strong> and <strong>AI / Machine Learning</strong> — and I enjoy working across both depending on what the problem needs.</p>
+                  <p className="about-para">I&apos;m a Computer Science student pursuing my <strong>M.Sc. at Fergusson College, Pune</strong> (1st Year CGPA: 8.55), with a strong B.Sc. foundation (CGPA 8.98) from Sangamner College. My work spans two equally strong tracks — <strong>full-stack development</strong> and <strong>AI / Machine Learning</strong> — and I enjoy working across both depending on what the problem needs.</p>
                   <p className="about-para">On the ML side, my NIQ project achieved <strong>99.8% Random Forest accuracy</strong> on 50,000 real streaming sessions, projected to unlock +119K ad impressions. On the development side, UPHI is a production healthcare platform with <strong>20+ Spring Boot APIs</strong>, three interfaces, JWT auth, Docker deployment, and Gemini AI integration — built and shipped end-to-end.</p>
                 </div>
                 <div>
@@ -870,7 +870,7 @@ export default function App() {
               >
                 <div className="resume-icon">📄</div>
                 <h3 className="resume-cta-title">Mayuresh Rajendra Thorat</h3>
-                <p className="resume-cta-desc">Full-Stack Developer &amp; AI / ML Engineer · M.Sc. CS at Fergusson College, Pune · B.Sc. CS CGPA 8.98 · NIQ Analytics Challenge Finalist</p>
+                <p className="resume-cta-desc">Full-Stack Developer &amp; AI / ML Engineer · M.Sc. CS at Fergusson College, Pune (1st Yr CGPA: 8.55) · B.Sc. CS CGPA 8.98 · NIQ Analytics Challenge Finalist</p>
                 <div className="resume-btn-row">
                   <button className="btn-primary" onClick={() => setShowResume(true)}>
                     <IconExternal /> View Resume
