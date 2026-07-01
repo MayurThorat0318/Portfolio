@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const RESUME_FILENAME = "Mayuresh_Thorat_Resume.pdf";
 const RESUME_DATA_URL = `/${RESUME_FILENAME}`;
@@ -6,7 +7,66 @@ const RESUME_DATA_URL = `/${RESUME_FILENAME}`;
 /* ============================================================
    DATA
    ============================================================ */
-const NAV_ITEMS = ["home", "about", "skills", "projects", "achievements", "resume", "contact"];
+const NAV_ITEMS = ["home", "about", "skills", "projects", "achievements", "certificates", "resume", "contact"];
+
+const CERTIFICATES = [
+  {
+    id: "ai-cert",
+    title: "Artificial Intelligence Fundamentals",
+    issuer: "IBM SkillsBuild",
+    issuerLogo: "🤖",
+    date: "2026",
+    category: "AI / Machine Learning",
+    categoryColor: "cyan",
+    description: "Credential validating foundational knowledge in Artificial Intelligence concepts, tools, and real-world applications — covering ML workflows, neural networks, and AI ethics.",
+    skills: ["Artificial Intelligence", "Machine Learning", "Neural Networks", "AI Ethics", "Data Science"],
+    file: "/AI_Certificate.png",
+    fileType: "image",
+    credentialId: null,
+  },
+  {
+    id: "python-cert",
+    title: "100 Days of Code: The Complete Python Bootcamp",
+    issuer: "Udemy · Dr. Angela Yu",
+    issuerLogo: "🐍",
+    date: "2026",
+    category: "Python · Programming",
+    categoryColor: "emerald",
+    description: "100-day immersive Python course covering core programming, automation, web scraping, data science, Flask web development, GUI apps, and professional best practices.",
+    skills: ["Python", "Flask", "Web Scraping", "Automation", "Data Analysis", "APIs", "OOP"],
+    file: "/Python_Udemy_Certificate.pdf",
+    fileType: "pdf",
+    credentialId: null,
+  },
+  {
+    id: "completion-frontend",
+    title: "Junior Frontend Developer",
+    issuer: "Internship · Certificate of Completion",
+    issuerLogo: "🖥️",
+    date: "2026",
+    category: "Frontend Development",
+    categoryColor: "indigo",
+    description: "Certificate of completion awarded for successfully fulfilling the responsibilities and deliverables of a Junior Frontend Developer internship — covering responsive UI development, JavaScript, and modern frontend workflows.",
+    skills: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "Frontend Development"],
+    file: "/completion-letter-junior_frontend_dev.pdf",
+    fileType: "pdf",
+    credentialId: null,
+  },
+  {
+    id: "completion-fullstack",
+    title: "Junior Full Stack Developer",
+    issuer: "Internship · Certificate of Completion",
+    issuerLogo: "🚀",
+    date: "2026",
+    category: "Full Stack Development",
+    categoryColor: "amber",
+    description: "Certificate of completion awarded for successfully fulfilling the responsibilities and deliverables of a Junior Full Stack Developer internship — spanning frontend interfaces, backend APIs, and database integration.",
+    skills: ["React.js", "Node.js", "Express.js", "MongoDB", "REST APIs", "Full Stack"],
+    file: "/completion-letter-junior_full_stack_dev.pdf",
+    fileType: "pdf",
+    credentialId: null,
+  },
+];
 
 const PROJECTS = [
   {
@@ -131,8 +191,25 @@ function ResumeModal({ onClose }) {
   }, [onClose]);
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Resume viewer">
-      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+    <motion.div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Resume viewer"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className="modal-box"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      >
         <div className="modal-header">
           <span className="modal-title">📄 Mayuresh Thorat — Resume</span>
           <div className="modal-actions">
@@ -150,10 +227,116 @@ function ResumeModal({ onClose }) {
             type="application/pdf"
           />
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
+
+/* ============================================================
+   MODAL for viewing Certificates
+   ============================================================ */
+function CertificateModal({ cert, onClose }) {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${cert.title} certificate viewer`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className="modal-box cert-modal-box"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      >
+        <div className="modal-header">
+          <span className="modal-title">{cert.issuerLogo} {cert.title}</span>
+          <div className="modal-actions">
+            <a href={cert.file} download className="modal-dl-btn">
+              <IconDownload /> Download
+            </a>
+            <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+          </div>
+        </div>
+        <div className="modal-body">
+          {cert.fileType === "image" ? (
+            <img
+              src={cert.file}
+              alt={cert.title}
+              className="cert-modal-img"
+            />
+          ) : (
+            <iframe
+              src={cert.file}
+              title={cert.title}
+              className="resume-iframe"
+              type="application/pdf"
+            />
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ============================================================
+   APP ANIMATIONS
+   ============================================================ */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 100, damping: 15 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95, x: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 80, damping: 15, delay: 0.4 },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
 
 /* ============================================================
    APP
@@ -184,10 +367,11 @@ function CopyEmailBtn({ email }) {
 }
 
 export default function App() {
-  const [menuOpen, setMenuOpen]     = useState(false);
-  const [scrolled, setScrolled]     = useState(false);
-  const [active, setActive]         = useState("home");
-  const [showResume, setShowResume] = useState(false);
+  const [menuOpen, setMenuOpen]         = useState(false);
+  const [scrolled, setScrolled]         = useState(false);
+  const [active, setActive]             = useState("home");
+  const [showResume, setShowResume]     = useState(false);
+  const [activeCert, setActiveCert]     = useState(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -215,7 +399,12 @@ export default function App() {
       <div className="bg-orb bg-orb-2" aria-hidden="true" />
       <div className="bg-orb bg-orb-3" aria-hidden="true" />
 
-      {showResume && <ResumeModal onClose={() => setShowResume(false)} />}
+      <AnimatePresence>
+        {showResume && <ResumeModal onClose={() => setShowResume(false)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeCert && <CertificateModal cert={activeCert} onClose={() => setActiveCert(null)} />}
+      </AnimatePresence>
 
       <div className="page-wrap">
         {/* ── NAVBAR ── */}
@@ -258,42 +447,56 @@ export default function App() {
 
         <main>
           {/* ── HERO ── */}
+          {/* ── HERO ── */}
           <section id="home" className="hero-section">
             <div className="container">
               <div className="hero-wrap">
-                <div className="hero-left">
-                  <div className="hero-status">
+                <motion.div
+                  className="hero-left"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div className="hero-status" variants={itemVariants}>
                     <span className="status-dot" />
                     Open to Internships &amp; Full-time Roles
-                  </div>
-                  <h1 className="hero-heading">
+                  </motion.div>
+                  <motion.h1 className="hero-heading" variants={itemVariants}>
                     Hi, I&apos;m <span className="hero-name">Mayuresh</span>
-                  </h1>
-                  <p className="hero-role">Full-Stack Developer &amp; AI / ML Engineer</p>
-                  <p className="hero-desc">
+                  </motion.h1>
+                  <motion.p className="hero-role" variants={itemVariants}>Full-Stack Developer &amp; AI / ML Engineer</motion.p>
+                  <motion.p className="hero-desc" variants={itemVariants}>
                     M.Sc. Computer Science student who builds across the full spectrum — production
                     full-stack platforms with 20+ REST APIs, and ML models achieving 99.8% accuracy
                     on 50K real sessions. I enjoy solving real problems with clean code, whether
                     that means a Spring Boot backend or a Random Forest pipeline.
-                  </p>
-                  <div className="hero-cta">
+                  </motion.p>
+                  <motion.div className="hero-cta" variants={itemVariants}>
                     <button className="btn-primary" onClick={() => scrollTo("projects")}>
                       View Projects <IconArrow />
                     </button>
                     <button className="btn-outline" onClick={() => setShowResume(true)}>
                       <IconDownload /> View Resume
                     </button>
-                  </div>
-                  <div className="hero-socials">
-                    <a href="https://github.com/MayurThorat0318" target="_blank" rel="noreferrer" className="social-link"><IconGithub /> GitHub</a>
-                    <a href="https://www.linkedin.com/in/mayuresh-thorat-0987b3362/" target="_blank" rel="noreferrer" className="social-link"><IconLinkedIn /> LinkedIn</a>
-                    <a href="https://leetcode.com/u/MayureshThorat09/" target="_blank" rel="noreferrer" className="social-link"><IconLeetCode /> LeetCode</a>
+                  </motion.div>
+                  <motion.div className="hero-socials" variants={itemVariants}>
+                    <motion.a whileHover={{ y: -3, color: "var(--cyan)" }} href="https://github.com/MayurThorat0318" target="_blank" rel="noreferrer" className="social-link"><IconGithub /> GitHub</motion.a>
+                    <motion.a whileHover={{ y: -3, color: "var(--cyan)" }} href="https://www.linkedin.com/in/mayuresh-thorat-0987b3362/" target="_blank" rel="noreferrer" className="social-link"><IconLinkedIn /> LinkedIn</motion.a>
+                    <motion.a whileHover={{ y: -3, color: "var(--cyan)" }} href="https://leetcode.com/u/MayureshThorat09/" target="_blank" rel="noreferrer" className="social-link"><IconLeetCode /> LeetCode</motion.a>
+                  </motion.div>
+                </motion.div>
 
-                  </div>
-                </div>
-
-                <div className="hero-right">
-                  <div className="hero-card">
+                <motion.div
+                  className="hero-right"
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div
+                    className="hero-card"
+                    whileHover={{ y: -6, boxShadow: "0 25px 60px rgba(6,182,212,0.15)" }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
                     <div className="hero-avatar">M</div>
                     <div className="hero-card-name">Mayuresh Rajendra Thorat</div>
                     <div className="hero-card-title">Full-Stack Developer &amp; AI / ML Engineer</div>
@@ -316,14 +519,22 @@ export default function App() {
                         <span className="exploring-tag">System Design</span>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               </div>
             </div>
           </section>
 
           {/* ── ABOUT ── */}
-          <section id="about" className="section about-section">
+          {/* ── ABOUT ── */}
+          <motion.section
+            id="about"
+            className="section about-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">About Me</div>
               <h2 className="sec-heading">Who I Am</h2>
@@ -334,50 +545,93 @@ export default function App() {
                 </div>
                 <div>
                   <div className="edu-stack">
-                    <div className="edu-card primary">
+                    <motion.div
+                      className="edu-card primary"
+                      whileHover={{ x: 5 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
                       <div className="edu-label">Current</div>
                       <div className="edu-degree">Master of Computer Science (M.Sc.)</div>
                       <div className="edu-college">Fergusson College, Pune</div>
-                      <div className="edu-meta"><span className="edu-year">2025 – 2026</span><span className="edu-grade">Pursuing</span></div>
-                    </div>
-                    <div className="edu-card">
+                      <div className="edu-meta"><span className="edu-year">2025 – 2026</span><span className="edu-grade">Pursuing · 1st Year CGPA: 8.55</span></div>
+                    </motion.div>
+                    <motion.div
+                      className="edu-card"
+                      whileHover={{ x: 5 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
                       <div className="edu-label">Undergraduate</div>
                       <div className="edu-degree">Bachelor of Computer Science (B.Sc.)</div>
                       <div className="edu-college">Sangamner College, Sangamner</div>
                       <div className="edu-meta"><span className="edu-year">2022 – 2025</span><span className="edu-grade">CGPA: 8.98</span></div>
-                    </div>
+                    </motion.div>
 
                   </div>
 
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* ── SKILLS ── */}
-          <section id="skills" className="section skills-section">
+          {/* ── SKILLS ── */}
+          <motion.section
+            id="skills"
+            className="section skills-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">Skills</div>
               <h2 className="sec-heading">Technologies I Work With</h2>
               <p className="sec-sub">Full-stack development and AI / ML — two equally strong tracks. React frontends, Spring Boot APIs, Random Forest models, NLP pipelines, GenAI integrations.</p>
               <div className="skills-grid">
                 {SKILLS.map((cat) => (
-                  <div className="skill-card" key={cat.title}>
+                  <motion.div
+                    className="skill-card"
+                    key={cat.title}
+                    whileHover={{ y: -6, scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
                     <div className="skill-card-header">
-                      <div className="skill-icon">{cat.icon}</div>
+                      <motion.div
+                        className="skill-icon"
+                        whileHover={{ scale: 1.15, rotate: 10 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        {cat.icon}
+                      </motion.div>
                       <span className="skill-card-title">{cat.title}</span>
                     </div>
                     <div className="skill-tags">
-                      {cat.tags.map((t) => <span className="skill-tag" key={t}>{t}</span>)}
+                      {cat.tags.map((t) => (
+                        <motion.span
+                          className="skill-tag"
+                          key={t}
+                          whileHover={{ scale: 1.08 }}
+                        >
+                          {t}
+                        </motion.span>
+                      ))}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* ── PROJECTS ── */}
-          <section id="projects" className="section projects-section">
+          {/* ── PROJECTS ── */}
+          <motion.section
+            id="projects"
+            className="section projects-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">Projects</div>
               <h2 className="sec-heading">Things I&apos;ve Built</h2>
@@ -385,7 +639,12 @@ export default function App() {
               <div className="projects-grid">
                 {PROJECTS.map((p) =>
                   p.featured ? (
-                    <article className="proj-card featured" key={p.id}>
+                    <motion.article
+                      className="proj-card featured"
+                      key={p.id}
+                      whileHover={{ y: -6, scale: 1.01, boxShadow: "0 20px 40px rgba(6,182,212,0.12)" }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    >
                       <div className="proj-featured-content">
                         <div className="proj-top">
                           <span className={`proj-badge ${p.badgeColor}`}>{p.badge}</span>
@@ -407,9 +666,14 @@ export default function App() {
                           </div>
                         ))}
                       </div>
-                    </article>
+                    </motion.article>
                   ) : (
-                    <article className="proj-card" key={p.id}>
+                    <motion.article
+                      className="proj-card"
+                      key={p.id}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    >
                       <div className="proj-top">
                         <span className={`proj-badge ${p.badgeColor}`}>{p.badge}</span>
                         <span className="proj-year">{p.year}</span>
@@ -421,15 +685,23 @@ export default function App() {
                         <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link-github"><IconGithub /> GitHub</a>
                         {p.demo && <a href={p.demo} target="_blank" rel="noreferrer" className="proj-link accent"><IconExternal /> Live Demo</a>}
                       </div>
-                    </article>
+                    </motion.article>
                   )
                 )}
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* ── ACHIEVEMENTS & EXTRACURRICULARS ── */}
-          <section id="achievements" className="section achievements-section">
+          {/* ── ACHIEVEMENTS & EXTRACURRICULARS ── */}
+          <motion.section
+            id="achievements"
+            className="section achievements-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">Beyond Code</div>
               <h2 className="sec-heading">Achievements &amp; Extracurriculars</h2>
@@ -437,7 +709,11 @@ export default function App() {
 
               <div className="achievements-grid">
                 {/* Achievement */}
-                <div className="ach-card ach-card-highlight">
+                <motion.div
+                  className="ach-card ach-card-highlight"
+                  whileHover={{ y: -5, scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
                   <div className="ach-card-top">
                     <span className="ach-icon">🏆</span>
                     <span className="ach-badge">Achievement</span>
@@ -449,10 +725,14 @@ export default function App() {
                     <span className="ach-tag">Final Round</span>
                     <span className="ach-tag">Team DataGrinders</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Extracurriculars */}
-                <div className="ach-card">
+                <motion.div
+                  className="ach-card"
+                  whileHover={{ y: -5, scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
                   <div className="ach-card-top">
                     <span className="ach-icon">⭐</span>
                     <span className="ach-badge">Leadership</span>
@@ -464,34 +744,130 @@ export default function App() {
                     <li>Organised the <strong>Farewell ceremony</strong> for B.Sc. Third Year students — end-to-end coordination including venue, programme flow, décor, and student participation.</li>
                     <li>Managed the <strong>Freshers&apos; Party</strong> for incoming B.Sc. First Year students — event schedule, volunteers coordination, and welcoming experience for new students.</li>
                   </ul>
-                </div>
+                </motion.div>
 
                 {/* Interests */}
-                <div className="ach-card ach-card-interests">
+                <motion.div
+                  className="ach-card ach-card-interests"
+                  whileHover={{ y: -5, scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
                   <div className="ach-card-top">
                     <span className="ach-icon">✨</span>
                     <span className="ach-badge">Interests</span>
                   </div>
                   <h3 className="ach-title">What I Enjoy</h3>
                   <div className="interests-grid">
-                    <div className="interest-item"><span>🧩</span> Solving complex problems</div>
-                    <div className="interest-item"><span>🎙</span> Event management &amp; leadership</div>
-                    <div className="interest-item"><span>🤝</span> Talking with new people</div>
-                    <div className="interest-item"><span>🏏</span> Playing cricket</div>
-                    <div className="interest-item"><span>🎵</span> Listening to music</div>
+                    {["🧩 Solving complex problems", "🎙 Event management & leadership", "🤝 Talking with new people", "🏏 Playing cricket", "🎵 Listening to music"].map((itemText, i) => {
+                      const icon = itemText.split(" ")[0];
+                      const labelText = itemText.substring(icon.length + 1);
+                      return (
+                        <motion.div
+                          key={i}
+                          className="interest-item"
+                          whileHover={{ scale: 1.05, borderColor: "var(--cyan)" }}
+                        >
+                          <span>{icon}</span> {labelText}
+                        </motion.div>
+                      );
+                    })}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
-          </section>
+          </motion.section>
+
+          {/* ── CERTIFICATES ── */}
+          <motion.section
+            id="certificates"
+            className="section certificates-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
+            <div className="container">
+              <div className="sec-eyebrow">Certificates</div>
+              <h2 className="sec-heading">Credentials &amp; Certifications</h2>
+              <p className="sec-sub">Industry-recognised certifications validating my skills across AI, machine learning, and software development.</p>
+
+              <div className="certs-grid">
+                {CERTIFICATES.map((cert) => (
+                  <motion.div
+                    key={cert.id}
+                    className="cert-card"
+                    whileHover={{ y: -6, scale: 1.01, boxShadow: "0 20px 50px rgba(6,182,212,0.12)" }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    {/* Top accent line */}
+                    <div className="cert-card-accent" />
+
+                    {/* Header */}
+                    <div className="cert-card-header">
+                      <div className="cert-issuer-logo">{cert.issuerLogo}</div>
+                      <div className="cert-header-info">
+                        <span className={`cert-category-badge cert-badge-${cert.categoryColor}`}>{cert.category}</span>
+                        <span className="cert-year">{cert.date}</span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="cert-card-body">
+                      <h3 className="cert-title">{cert.title}</h3>
+                      <div className="cert-issuer-name">{cert.issuer}</div>
+                      <p className="cert-desc">{cert.description}</p>
+                      <div className="cert-skills">
+                        {cert.skills.map((s) => (
+                          <span className="cert-skill-tag" key={s}>{s}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="cert-card-actions">
+                      <motion.button
+                        className="cert-btn cert-btn-primary"
+                        onClick={() => setActiveCert(cert)}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        <IconExternal /> View Certificate
+                      </motion.button>
+                      <motion.a
+                        href={cert.file}
+                        download
+                        className="cert-btn cert-btn-outline"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        <IconDownload /> Download
+                      </motion.a>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.section>
 
           {/* ── RESUME ── */}
-          <section id="resume" className="section resume-section">
+          {/* ── RESUME ── */}
+          <motion.section
+            id="resume"
+            className="section resume-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">Resume</div>
               <h2 className="sec-heading">My Resume</h2>
               <p className="sec-sub" style={{ margin: "0 auto 0" }}>View or download my latest resume — updated with all projects, skills, and achievements.</p>
-              <div className="resume-cta-box">
+              <motion.div
+                className="resume-cta-box"
+                whileHover={{ scale: 1.01, boxShadow: "0 25px 60px rgba(6,182,212,0.12)" }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
                 <div className="resume-icon">📄</div>
                 <h3 className="resume-cta-title">Mayuresh Rajendra Thorat</h3>
                 <p className="resume-cta-desc">Full-Stack Developer &amp; AI / ML Engineer · M.Sc. CS at Fergusson College, Pune · B.Sc. CS CGPA 8.98 · NIQ Analytics Challenge Finalist</p>
@@ -503,12 +879,20 @@ export default function App() {
                     <IconDownload /> Download PDF
                   </a>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </section>
+          </motion.section>
 
           {/* ── CONTACT ── */}
-          <section id="contact" className="section contact-section">
+          {/* ── CONTACT ── */}
+          <motion.section
+            id="contact"
+            className="section contact-section"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             <div className="container">
               <div className="sec-eyebrow">Contact</div>
               <h2 className="sec-heading">Let&apos;s Connect</h2>
@@ -521,7 +905,12 @@ export default function App() {
                     const isExt   = !isEmail && !isTel;
                     if (isEmail) {
                       return (
-                        <div key={item.label} className="contact-email-row">
+                        <motion.div
+                          key={item.label}
+                          className="contact-email-row"
+                          whileHover={{ x: 5 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        >
                           <a
                             href="https://mail.google.com/mail/?view=cm&to=thoratmayuresh30@gmail.com"
                             target="_blank"
@@ -535,51 +924,72 @@ export default function App() {
                             </div>
                           </a>
                           <CopyEmailBtn email={item.value} />
-                        </div>
+                        </motion.div>
                       );
                     }
                     return (
-                      <a
+                      <motion.a
                         key={item.label}
                         href={item.href}
                         target={isExt ? "_blank" : undefined}
                         rel={isExt ? "noreferrer" : undefined}
                         className="contact-link-item"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                       >
                         <div className="contact-link-icon">{item.icon}</div>
                         <div>
                           <div className="contact-link-label">{item.label}</div>
                           <div className="contact-link-val">{item.value}</div>
                         </div>
-                      </a>
+                      </motion.a>
                     );
                   })}
                 </div>
-                <div className="contact-reach">
+                <motion.div
+                  className="contact-reach"
+                  whileHover={{ scale: 1.01, boxShadow: "0 25px 60px rgba(6,182,212,0.12)" }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
                   <div className="reach-title">Prefer to reach out directly?</div>
                   <p className="reach-desc">
                     I&apos;m always open to a conversation — whether it&apos;s a job opportunity,
                     a collaboration, or just a hello. Pick whichever way works best for you.
                   </p>
-                  <a
+                  <motion.a
                     href="https://mail.google.com/mail/?view=cm&to=thoratmayuresh30@gmail.com" target="_blank" rel="noreferrer"
                     className="reach-btn reach-btn-primary"
+                    whileHover={{ y: -2, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
                   >
                     <span>✉</span> Send me an Email
-                  </a>
-                  <a href="https://www.linkedin.com/in/mayuresh-thorat-0987b3362/" target="_blank" rel="noreferrer" className="reach-btn reach-btn-secondary">
+                  </motion.a>
+                  <motion.a
+                    href="https://www.linkedin.com/in/mayuresh-thorat-0987b3362/" target="_blank" rel="noreferrer"
+                    className="reach-btn reach-btn-secondary"
+                    whileHover={{ y: -2, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  >
                     <IconLinkedIn /> Connect on LinkedIn
-                  </a>
-                  <a href="tel:+918010130633" className="reach-btn reach-btn-secondary">
+                  </motion.a>
+                  <motion.a
+                    href="tel:+918010130633"
+                    className="reach-btn reach-btn-secondary"
+                    whileHover={{ y: -2, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  >
                     <span>📞</span> Call / WhatsApp
-                  </a>
+                  </motion.a>
                   <div className="reach-note">
                     ⚡ Typically responds within 24 hours
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
-          </section>
+          </motion.section>
         </main>
 
         <footer className="footer">
