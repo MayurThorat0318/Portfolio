@@ -1025,6 +1025,41 @@
   .proj-link:hover { color: var(--text-primary); }
   .proj-link.accent { color: var(--cyan); }
   .proj-link.accent:hover { color: #67e8f9; }
+
+  /* Watch Demo button in project cards */
+  .proj-link-demo {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--emerald);
+    font-family: inherit;
+  }
+  .proj-link-demo:hover {
+    color: #6ee7b7;
+  }
+
+  /* Video modal overrides */
+  .video-modal-box {
+    max-width: 1020px;
+  }
+  .video-modal-body {
+    background: #000 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video-player {
+    width: 100%;
+    max-height: 75vh;
+    display: block;
+    outline: none;
+    border: none;
+    border-radius: 0;
+  }
+  @media (max-width: 680px) {
+    .video-modal-box { max-width: 100%; }
+    .video-player { max-height: 60vh; }
+  }
   
   /* Aside stat boxes in featured card */
   .proj-stat-box {

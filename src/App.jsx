@@ -80,6 +80,7 @@ const PROJECTS = [
     tech: ["React.js", "Spring Boot", "MongoDB", "Docker Compose", "JWT Auth", "Gemini API", "REST APIs", "Role-based Access Control"],
     github: "https://github.com/MayurThorat0318/UPHI",
     demo: null,
+    demoVideo: "/demo_UPHI.mp4",
     stats: [
       { num: "20+", label: "APIs Built" },
       { num: "3", label: "Interfaces" },
@@ -169,6 +170,9 @@ function IconDownload() {
 function IconArrow() {
   return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
 }
+function IconPlay() {
+  return <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>;
+}
 function IconLinkedIn() {
   return <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>;
 }
@@ -225,6 +229,62 @@ function ResumeModal({ onClose }) {
             title="Mayuresh Thorat Resume"
             className="resume-iframe"
             type="application/pdf"
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ============================================================
+   MODAL for watching Demo Video
+   ============================================================ */
+function VideoModal({ videoSrc, title, onClose }) {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${title} demo video`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div
+        className="modal-box video-modal-box"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      >
+        <div className="modal-header">
+          <span className="modal-title">▶ {title} — Demo</span>
+          <div className="modal-actions">
+            <a href={videoSrc} download className="modal-dl-btn">
+              <IconDownload /> Download
+            </a>
+            <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+          </div>
+        </div>
+        <div className="modal-body video-modal-body">
+          <video
+            src={videoSrc}
+            controls
+            autoPlay
+            className="video-player"
           />
         </div>
       </motion.div>
@@ -372,6 +432,7 @@ export default function App() {
   const [active, setActive]             = useState("home");
   const [showResume, setShowResume]     = useState(false);
   const [activeCert, setActiveCert]     = useState(null);
+  const [activeVideo, setActiveVideo]   = useState(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -404,6 +465,9 @@ export default function App() {
       </AnimatePresence>
       <AnimatePresence>
         {activeCert && <CertificateModal cert={activeCert} onClose={() => setActiveCert(null)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {activeVideo && <VideoModal videoSrc={activeVideo.src} title={activeVideo.title} onClose={() => setActiveVideo(null)} />}
       </AnimatePresence>
 
       <div className="page-wrap">
@@ -655,6 +719,7 @@ export default function App() {
                         <div className="proj-tech">{p.tech.map((t) => <span className="proj-tech-tag" key={t}>{t}</span>)}</div>
                         <div className="proj-links">
                           <a href={p.github} target="_blank" rel="noopener noreferrer" className="proj-link proj-link-github"><IconGithub /> View on GitHub</a>
+                          {p.demoVideo && <button className="proj-link proj-link-demo" onClick={() => setActiveVideo({ src: p.demoVideo, title: p.title })}><IconPlay /> Watch Demo</button>}
                           {p.demo && <a href={p.demo} target="_blank" rel="noreferrer" className="proj-link accent"><IconExternal /> Live Demo</a>}
                         </div>
                       </div>
