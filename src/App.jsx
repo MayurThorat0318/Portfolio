@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const RESUME_FILENAME = "Mayuresh_Thorat_Resume.pdf";
+const RESUME_FILENAME = "MayureshThoratResume(Official).pdf";
 const RESUME_DATA_URL = `/${RESUME_FILENAME}`;
 
 /* ============================================================
